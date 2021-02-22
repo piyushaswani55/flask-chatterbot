@@ -4,7 +4,8 @@ from chatterbot.trainers import ChatterBotCorpusTrainer
 
 app = Flask(__name__)
 
-english_bot = ChatBot("Chatterbot", storage_adapter="chatterbot.storage.SQLStorageAdapter")
+english_bot = ChatBot(
+    "Chatterbot", storage_adapter="chatterbot.storage.SQLStorageAdapter")
 trainer = ChatterBotCorpusTrainer(english_bot)
 trainer.train("chatterbot.corpus.english")
 
@@ -12,9 +13,9 @@ trainer.train("chatterbot.corpus.english")
 def home():
     return render_template("index.html")
 
-@app.route("/get")
-def get_bot_response():
-    userText = request.args.get('msg')
+@app.route("/chat", methods=['POST'])
+def getBotResponse():
+    userText = request.json['message']
     return str(english_bot.get_response(userText))
 
 
